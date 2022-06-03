@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\ThingController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +19,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+/*Route::group(['middleware' => 'cors'], function () {
+
+});*/
+Route::group(['middleware' => ['cors']], function(){
+    Route::get('/category', [CategoryController::class, 'index']);
+
+
+    Route::post('/thing', [ThingController::class, 'create'])->middleware('auth:api');
+    Route::post('/shop', [ShopController::class, 'store'])->middleware('auth:api');
+
+
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
+
 });
+
