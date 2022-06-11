@@ -23,9 +23,9 @@ class Shop extends Model
         'user_id',
     ];
 
-    public function user(): HasOne
+    public function user(): belongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function thing(): HasMany

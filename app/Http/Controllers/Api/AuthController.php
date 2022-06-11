@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Constants\UserRoles;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\RegisterFormRequest;
+use App\Http\Requests\RegisterFormRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -26,6 +26,29 @@ class AuthController extends Controller
             $request->except('password'),
             ['password' => bcrypt($request->password)],
         ));
+
+        $data = $request->all();
+
+        if (isset($data['photo'])) {
+            [$imageName, $imageContent] = explode('\\', $data['photo']);
+            $data['photo'] = $imageName;
+        }
+
+        if (isset($data['photo'])) {
+            $imageContent = str_replace(
+                [
+                    'data:image/jpeg;base64,',
+                    'data:image/png;base64,',
+                    'data:image/jpg;base64,'
+                ],
+                '',
+                $imageContent
+            );
+            $imageContent = str_replace(' ', '+', $imageContent);
+            file_put_contents(storage_path() . '/app/public/images/' . $imageName, base64_decode($imageContent));
+        }
+        $user->photo = $imageName;
+        $user->save();
 
         return new JsonResponse([
             'message' => 'You were successfully registered. Use your email and password to sign in.'

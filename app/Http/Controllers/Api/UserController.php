@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
+use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,18 +16,38 @@ class UserController extends Controller
     public function show($id)
     {
         return response()->json([
-            User::findOrFail($id)
+            User::with('shop')->findOrFail($id)
         ],
             Response::HTTP_OK
         );
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(UserUpdateRequest $request, $id): JsonResponse
     {
         $current = User::FindOrFail($id);
 
-        $data = $request->only('name', 'surname', 'email', 'phone');
+        $data = $request->only('name', 'surname', 'email', 'phone', 'photo');
         $password = $request->only(['password' => bcrypt($request->password)]);
+
+        if (isset($data['photo'])) {
+            [$imageName, $imageContent] = explode('\\', $data['photo']);
+            $data['photo'] = $imageName;
+        }
+
+        if (isset($data['photo'])) {
+            $imageContent = str_replace(
+                [
+                    'data:image/jpeg;base64,',
+                    'data:image/png;base64,',
+                    'data:image/jpg;base64,'
+                ],
+                '',
+                $imageContent
+            );
+            $imageContent = str_replace(' ', '+', $imageContent);
+            file_put_contents(storage_path() . '/app/public/images/' . $imageName, base64_decode($imageContent));
+        }
+
         $current->fill($data)->save();
         $current->fill($password)->save();
         return response()->json(['updated' => true], Response::HTTP_OK);

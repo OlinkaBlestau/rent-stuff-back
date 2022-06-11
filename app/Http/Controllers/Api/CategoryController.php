@@ -21,4 +21,14 @@ class CategoryController extends Controller
             Response::HTTP_OK
         );
     }
+
+    public function show($id)
+    {
+        return response()->json([
+            Category::findOrFail($id)
+        ],
+            Response::HTTP_OK
+        );
+    }
+
 }

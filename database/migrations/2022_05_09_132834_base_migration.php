@@ -42,7 +42,7 @@ return new class extends Migration
         Schema::create('things', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name');
-            $table->string('price' );
+            $table->double('price' );
             $table->string('description');
             $table->string('photo')->nullable();
             $table->dateTime('created')->nullable()->useCurrent();

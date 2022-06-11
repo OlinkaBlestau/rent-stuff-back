@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Model implements Authenticatable
@@ -34,6 +35,11 @@ class User extends Model implements Authenticatable
     public function order(): belongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function shop(): hasOne
+    {
+        return $this->hasOne(Shop::class);
     }
 }
 
