@@ -46,9 +46,9 @@ class AuthController extends Controller
             );
             $imageContent = str_replace(' ', '+', $imageContent);
             file_put_contents(storage_path() . '/app/public/images/' . $imageName, base64_decode($imageContent));
+            $user->photo = $imageName;
+            $user->save();
         }
-        $user->photo = $imageName;
-        $user->save();
 
         return new JsonResponse([
             'message' => 'You were successfully registered. Use your email and password to sign in.'
