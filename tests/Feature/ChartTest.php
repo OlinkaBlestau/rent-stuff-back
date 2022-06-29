@@ -17,20 +17,20 @@ class ChartTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
-    {
-        Artisan::call('passport:install');
-
-        $user = User::factory()->create();
-        Passport::actingAs($user, [UserRoles::LANDLORD->value]);
-
-        $token = $user->token();
-
-        $headers = ['Authorization' => 'Bearer ' . $token];
-
-        $response = $this->get('/api/count', $headers);
-        //print_r($response->content());
-
-        $response->assertStatus(200);
-    }
+//    public function test_example()
+//    {
+//        Artisan::call('passport:install');
+//
+//        $user = User::factory()->create();
+//        Passport::actingAs($user, [UserRoles::LANDLORD->value]);
+//
+//        $token = $user->token();
+//
+//        $headers = ['Authorization' => 'Bearer ' . $token];
+//
+//        $response = $this->get('/api/count', $headers);
+//        print_r($response->content());
+//
+//        $response->assertStatus(200);
+//    }
 }

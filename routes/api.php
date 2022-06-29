@@ -39,6 +39,7 @@ Route::group(['middleware' => ['cors']], function(){
     Route::get('/user/{id}', [UserController::class, 'show']);
     Route::put('/user/{id}', [UserController::class, 'update']);
 
+    Route::get('/shop', [ShopController::class, 'index']);
     Route::get('/shop/{id}', [ShopController::class, 'show']);
     Route::put('/shop/{id}', [ShopController::class, 'update'])->middleware('auth:api');
 

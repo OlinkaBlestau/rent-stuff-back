@@ -13,20 +13,20 @@ class CategoryTest extends TestCase
      *
      * @return void
      */
-    public function test_index_successful()
-    {
-        $response = $this->getJson('/api/category');
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_show_successful()
-    {
-        $response = $this->getJson('/api/category/1');
-        $response->assertStatus(200);
-    }
+//    public function test_index_successful()
+//    {
+//        $response = $this->getJson('/api/category');
+//        $response->assertStatus(200);
+//    }
+//
+//    /**
+//     * A basic feature test example.
+//     *
+//     * @return void
+//     */
+//    public function test_show_successful()
+//    {
+//        $response = $this->getJson('/api/category/1');
+//        $response->assertStatus(200);
+//    }
 }

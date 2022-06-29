@@ -20,8 +20,6 @@ class ChartController extends Controller
             }
         ])->get();
 
-        return response([
-            'things_count' => $things,
-        ]);
+        return response($things);
     }
 }

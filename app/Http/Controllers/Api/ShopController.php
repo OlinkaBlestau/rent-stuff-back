@@ -13,13 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 class ShopController extends Controller
 {
 
+    public function index()
+    {
+        return response(Shop::all());
+    }
+
     public function show($id)
     {
-        return response()->json([
-            Shop::with('thing')->findOrFail($id)
-        ],
-            Response::HTTP_OK
-        );
+        return response(Shop::with('thing')->findOrFail($id));
     }
 
     public function store(ShopRequest $request)
@@ -27,12 +28,7 @@ class ShopController extends Controller
         $data = $request->all();
         Shop::create($data);
 
-        return response()->json(
-            [
-                'created' => true
-            ],
-            Response::HTTP_CREATED
-        );
+        return response(true);
     }
 
     public function isUserHasShop(User $user): \Illuminate\Http\Response
@@ -42,16 +38,14 @@ class ShopController extends Controller
             $q->where('user_id', $user->id);
         })->get();
 
-        return response([
-            "has" => count($shop) > 0
-        ]);
+        return response(count($shop) > 0);
     }
 
-    public function update(ShopRequest $request, $id): JsonResponse
+    public function update(ShopRequest $request, $id): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
         $current = Shop::FindOrFail($id);
         $data = $request->all();
         $current->fill($data)->save();
-        return response()->json(['updated' => true], Response::HTTP_OK);
+        return response(true);
     }
 }

@@ -10,25 +10,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
         $categories = Category::all();
 
-        return response()->json(
-            [
-                "categories" => $categories
-            ],
-            Response::HTTP_OK
-        );
+        return response($categories);
     }
 
     public function show($id)
     {
-        return response()->json([
-            Category::findOrFail($id)
-        ],
-            Response::HTTP_OK
-        );
+        return response(Category::findOrFail($id));
     }
 
 }

@@ -15,14 +15,10 @@ class UserController extends Controller
 {
     public function show($id)
     {
-        return response()->json([
-            User::with('shop')->findOrFail($id)
-        ],
-            Response::HTTP_OK
-        );
+        return response(User::with('shop')->findOrFail($id));
     }
 
-    public function update(UserUpdateRequest $request, $id): JsonResponse
+    public function update(UserUpdateRequest $request, $id): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
         $current = User::FindOrFail($id);
 
@@ -50,6 +46,6 @@ class UserController extends Controller
 
         $current->fill($data)->save();
         $current->fill($password)->save();
-        return response()->json(['updated' => true], Response::HTTP_OK);
+        return response(true);
     }
 }

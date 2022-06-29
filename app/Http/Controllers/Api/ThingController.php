@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ThingController extends Controller
 {
 
-    public function create(ThingRequest $request): JsonResponse
+    public function create(ThingRequest $request): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
         $data = $request->all();
 
@@ -41,37 +41,25 @@ class ThingController extends Controller
         $thing->category()->associate($data['category_id']);
         $thing->save();
 
-        return response()->json(['Ok'], Response::HTTP_OK);
+        return response('Ok');
     }
 
     public function showByUser($id)
     {
-        return response()->json([
-            User::with('shop.thing.category')->findOrFail($id)
-        ],
-            Response::HTTP_OK
-        );
+        return response(User::with('shop.thing.category')->findOrFail($id));
     }
 
     public function showAll()
     {
-        return response()->json([
-            Thing::with('category')->get()
-        ],
-            Response::HTTP_OK
-        );
+        return response(Thing::with('category')->get());
     }
 
     public function show($id)
     {
-        return response()->json([
-            Thing::with('category','shop')->findOrFail($id)
-        ],
-            Response::HTTP_OK
-        );
+        return response(Thing::with('category','shop')->findOrFail($id));
     }
 
-    public function update(ThingRequest $request, $id): JsonResponse
+    public function update(ThingRequest $request, $id): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
         $current = Thing::FindOrFail($id);
 
@@ -98,17 +86,13 @@ class ThingController extends Controller
 
         $current->fill($data)->save();
 
-        return new JsonResponse([
-            'update' => true
-        ], Response::HTTP_OK);
+        return response(true);
     }
 
 
     public function delete(int $id): \Illuminate\Http\Response
     {
         Thing::destroy($id);
-        return response([
-            'deleted' => true
-        ]);
+        return response(true);
     }
 }
