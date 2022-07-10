@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\ThingController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\IotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['cors']], function(){
     Route::get('/category', [CategoryController::class, 'index']);
     Route::get('/category/{id}', [CategoryController::class, 'show']);
-
 
     Route::post('/thing', [ThingController::class, 'create'])->middleware('auth:api');
     Route::post('/shop', [ShopController::class, 'store'])->middleware('auth:api');
@@ -52,6 +52,10 @@ Route::group(['middleware' => ['cors']], function(){
     });
 
     Route::get('/count', [ChartController::class, 'getThingsPerMonth'])->middleware('auth:api');
+
+    Route::group(['prefix' => 'iot'], function () {
+        Route::post('/setThingCoords', [IotController::class, 'setThingCoords']);
+    });
 
 });
 

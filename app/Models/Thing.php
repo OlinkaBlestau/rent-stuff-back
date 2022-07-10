@@ -16,6 +16,8 @@ class Thing extends Model
         'price',
         'description',
         'photo',
+        'longitude',
+        'latitude',
         'shop_id',
         'category_id',
     ];
