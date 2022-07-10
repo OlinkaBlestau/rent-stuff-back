@@ -20,7 +20,7 @@ class ShopController extends Controller
 
     public function show($id)
     {
-        return response(Shop::with('thing')->findOrFail($id));
+        return response(Shop::with('thing.category')->findOrFail($id));
     }
 
     public function store(ShopRequest $request)
